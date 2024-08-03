@@ -11,17 +11,21 @@ import web.service.UserService;
 @RequestMapping("/users")
 public class UserController {
 
+    private final UserService userService;
+
     @Autowired
-    private UserService userService;
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping
-    public String index(Model model) {
+    public String displayIndex(Model model) {
         model.addAttribute("users", userService.getAllUsers());
         return "/index";
     }
 
     @GetMapping("/{id}")
-    public String user(@PathVariable("id") int id, Model model) {
+    public String getUserById(@PathVariable("id") int id, Model model) {
         model.addAttribute("user", userService.getUser(id));
         return "/user";
     }

@@ -44,32 +44,32 @@ public class AppConfig {
     }
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+    public LocalContainerEntityManagerFactoryBean createEntityManagerFactory() {
         LocalContainerEntityManagerFactoryBean entityManager =
                 new LocalContainerEntityManagerFactoryBean();
         entityManager.setDataSource(getDataSource());
         entityManager.setPackagesToScan("web");
 
         entityManager.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-        entityManager.setJpaProperties(hibernateProperties());
+        entityManager.setJpaProperties(createHibernateProperties());
 
         return entityManager;
     }
 
     @Bean
-    public PlatformTransactionManager platformTransactionManager() {
+    public PlatformTransactionManager createPlatformTransactionManager() {
         JpaTransactionManager manager = new JpaTransactionManager();
-        manager.setEntityManagerFactory(entityManagerFactory().getObject());
+        manager.setEntityManagerFactory(createEntityManagerFactory().getObject());
 
         return manager;
     }
 
     @Bean
-    public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
+    public PersistenceExceptionTranslationPostProcessor createExceptionTranslation() {
         return new PersistenceExceptionTranslationPostProcessor();
     }
 
-    Properties hibernateProperties() {
+    Properties createHibernateProperties() {
         Properties properties = new Properties();
 
         properties.put("db.properties", "hibernate.show_sql");
